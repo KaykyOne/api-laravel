@@ -1,19 +1,20 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
-use App\Models\invoice;
-use App\Http\Requests\StoreinvoiceRequest;
-use App\Http\Requests\UpdateinvoiceRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\UserResource;
+use App\Models\User;
+use Illuminate\Http\Request;
 
-class InvoiceController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return UserResource::collection(User::all());
     }
 
     /**
@@ -27,7 +28,7 @@ class InvoiceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreinvoiceRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -35,15 +36,15 @@ class InvoiceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(invoice $invoice)
+    public function show(User $user)
     {
-        //
+        return new UserResource($user);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(invoice $invoice)
+    public function edit(string $id)
     {
         //
     }
@@ -51,7 +52,7 @@ class InvoiceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateinvoiceRequest $request, invoice $invoice)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -59,7 +60,7 @@ class InvoiceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(invoice $invoice)
+    public function destroy(string $id)
     {
         //
     }
