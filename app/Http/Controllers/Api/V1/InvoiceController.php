@@ -16,9 +16,15 @@ class InvoiceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return InvoiceResource::collection(Invoice::with('user')->get());
+        // return InvoiceResource::collection(Invoice::where([
+        //     ['value', '>', '5000'],
+        //     ['paid', '=', '1']
+        // ])->with('user')->get());
+        //return InvoiceResource::collection(Invoice::with('user')->get());
+
+        return (new Invoice())->filter($request);
     }
 
 
@@ -67,7 +73,7 @@ class InvoiceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Invoice $invoice)
     {
         try {
             $validator = Validator::make($request->all(), [
@@ -81,8 +87,6 @@ class InvoiceController extends Controller
             if ($validator->fails()) {
                 return $this->error('Validation Error', $validator->errors(), 422);
             }
-
-            $invoice = Invoice::find($id);
 
             if (!$invoice) {
                 return $this->error('Invoice not found', ['error' => 'Invoice not found'], 404);
@@ -103,11 +107,9 @@ class InvoiceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Invoice $invoice)
     {
         try {
-            $invoice = Invoice::findOrFail($id);
-
             if (!$invoice) {
                 return $this->error('Invoice not found', ['error' => 'Invoice not found'], 404);
             }
